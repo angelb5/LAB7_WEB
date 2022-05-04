@@ -56,16 +56,29 @@ public class CarritoController {
     @GetMapping("/comprar")
     public String comprarCarrito(HttpSession session){
         List<Juegos> juegosEnCarrito = (List<Juegos>) session.getAttribute("carrito");
-        JuegosxUsuario jxu= new JuegosxUsuario();
+        List<JuegosxUsuario> juegosComprar = new ArrayList<JuegosxUsuario>();
         User user= (User) session.getAttribute("usuario");
         int ncarrito = (int) session.getAttribute("ncarrito");
+
         for (Juegos juego: juegosEnCarrito) {
-            jxu.setIdjuego(juego.getIdjuego());
-            jxu.setIdusuario(user.getIdusuario());
-            jxu.setCantidad(1);
-            juegosxUsuarioRepository.save(jxu);
-            System.out.println(juego.getNombre());
+            boolean contado = false;
+            for(JuegosxUsuario jComprar : juegosComprar ){
+                if(jComprar.getIdjuego()==juego.getIdjuego()){
+                    contado = true;
+                    jComprar.setCantidad(jComprar.getCantidad()+1);
+                }
+            }
+
+            if(!contado){
+                JuegosxUsuario jxu= new JuegosxUsuario();
+                jxu.setIdjuego(juego.getIdjuego());
+                jxu.setIdusuario(user.getIdusuario());
+                jxu.setCantidad(1);
+                juegosComprar.add(jxu);
+            }
         }
+
+        juegosxUsuarioRepository.saveAll(juegosComprar);
         session.setAttribute("carrito",new ArrayList<Juegos>());
         session.setAttribute("ncarrito",0);
         return "redirect:/juegos/lista";
@@ -79,7 +92,18 @@ public class CarritoController {
         if (juego.isPresent()){
             List<Juegos> juegosEnCarrito = (List<Juegos>) session.getAttribute("carrito");
             int ncarrito = (int) session.getAttribute("ncarrito");
-            juegosEnCarrito.removeIf(juegos -> (juegos.getIdjuego()==juego.get().getIdjuego()));
+
+            Iterator itr = juegosEnCarrito.iterator();
+            Juegos j;
+
+            while (itr.hasNext()){
+                j = (Juegos) itr.next();
+                if(j.getIdjuego()==id){
+                    itr.remove();
+                    break;
+                }
+            }
+
             session.setAttribute("carrito",juegosEnCarrito);
             session.setAttribute("ncarrito",ncarrito-1);
         }
