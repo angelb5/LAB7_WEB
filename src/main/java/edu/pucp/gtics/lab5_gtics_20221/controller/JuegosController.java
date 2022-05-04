@@ -42,7 +42,7 @@ public class JuegosController {
 //
 //     }
 
-    @GetMapping(value = {"", "/", "juegos/vista"})
+    @GetMapping(value = {"", "/", "juegos/lista"})
     public String vistaJuegos(Model model, HttpSession session){
         List<Juegos> listaJuegos = juegosRepository.findAll(Sort.by("nombre").descending());
         model.addAttribute("listaJuegos",listaJuegos);

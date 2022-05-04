@@ -12,7 +12,7 @@
             </div>
             <div class="container-fluid">
 
-                <a class="btn btn-success mt-4 mb-4" th:href="..."><span class="bi bi-credit-card"></span> Comprar</a>
+                <a class="btn btn-success mt-4 mb-4" th:href="@{/carrito/comprar}"><span class="bi bi-credit-card"></span> Comprar</a>
                 <div th:if="${msg != null}" class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="bi bi-check-circle-fill"></i>
                     <span th:text="${msg}"></span>
@@ -23,12 +23,27 @@
                     <tr>
                         <th>#</th>
                         <th></th>
-                        <th style="width: 8%"></th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Plataforma</th>
+                        <th>Distribuidora</th>
+                        <th>Precio (S/)</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr >
-                        <td><a class="btn btn-danger" th:title="Borrar" th:href=""><span class="bi bi-trash"></span></a></td>
+                    <tr th:each="juego,cuenta : ${session.carrito}">
+                        <td th:text="${cuenta.count}"></td>
+                        <td>
+                            <img th:src="${juego.image}" th:alt="${juego.nombre}">
+                        </td>
+                        <td th:text="${juego.nombre}"></td>
+                        <td th:text="${juego.descripcion}"></td>
+                        <td th:text="${juego.plataforma}"></td>
+                        <td th:text="${juego.distribuidora}"></td>
+                        <td th:text="${juego.precio}"></td>
+                        <td><a class="btn btn-danger" th:title="Borrar" th:href="@{'/carrito/borrar?id='+${juego.getIdjuego()}}">
+                            <span class="bi bi-trash"></span></a></td>
                     </tr>
                     </tbody>
                 </table>

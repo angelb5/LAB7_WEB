@@ -22,6 +22,7 @@ public class CarritoController {
     @Autowired
     JuegosRepository juegosRepository;
 
+    @GetMapping("/lista")
     public String listaCarrito (Model model, HttpSession session){
 
         List<Juegos> juegosEnCarrito = (List<Juegos>) session.getAttribute("carrito");
@@ -33,6 +34,7 @@ public class CarritoController {
         return "carrito/lista";
     }
 
+    @GetMapping("/nuevo")
     public String nuevoCarrito(@RequestParam("id") int id, HttpSession session){
 
         Optional<Juegos> juego = juegosRepository.findById(id);
@@ -50,10 +52,12 @@ public class CarritoController {
         return "redirect:/vista";
     }
 
-    public String editarCarrito(){
+    @GetMapping("/comprar")
+    public String comprarCarrito(){
         return "redirect:/juegos/lista";
     }
 
+    @GetMapping("/borrar")
     public String borrarCarrito(@RequestParam("id") int id, HttpSession session){
 
         Optional<Juegos> juego = juegosRepository.findById(id);
