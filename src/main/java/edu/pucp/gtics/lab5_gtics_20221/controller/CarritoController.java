@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -34,15 +35,13 @@ public class CarritoController {
 
     @GetMapping("/nuevo")
     public String anadirCarrito(@RequestParam("id") int id, HttpSession session){
-        System.out.println(id);
+
         Optional<Juegos> juego = juegosRepository.findById(id);
 
         if (juego.isPresent()){
             List<Juegos> juegosEnCarrito = (List<Juegos>) session.getAttribute("carrito");
             int ncarrito = (int) session.getAttribute("ncarrito");
-
             juegosEnCarrito.add(juego.get());
-
             session.setAttribute("carrito",juegosEnCarrito);
             session.setAttribute("ncarrito",ncarrito+1);
         }
