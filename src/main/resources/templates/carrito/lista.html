@@ -35,14 +35,21 @@
                     <tr th:each="juego,cuenta : ${session.carrito}">
                         <td th:text="${cuenta.count}"></td>
                         <td>
-                            <img th:src="${juego.image}" th:alt="${juego.nombre}">
+                            <div class="overflow-hidden" style="width: 100px;">
+                                <img th:src="${juego.image}" th:alt="${juego.nombre}" style="min-width: 100px; width: 100%; height: 100%; object-fit: cover">
+                            </div>
                         </td>
-                        <td th:text="${juego.nombre}"></td>
+                        <td>
+                             <span th:text="${juego.nombre}" >
+                            </span>
+                            <span class="badge bg-warning text-dark" th:text="${juego.genero.nombre}">
+                            </span>
+                        </td>
                         <td th:text="${juego.descripcion}"></td>
                         <td th:text="${juego.plataforma}"></td>
                         <td th:text="${juego.distribuidora}"></td>
                         <td th:text="${juego.precio}"></td>
-                        <td><a class="btn btn-danger" th:title="Borrar" th:href="@{'/carrito/borrar?id='+${juego.getIdjuego()}}">
+                        <td><a class="btn btn-danger" th:title="Borrar" th:href="@{'/carrito/borrar?id='+${juego.idjuego}}">
                             <span class="bi bi-trash"></span></a></td>
                     </tr>
                     </tbody>
