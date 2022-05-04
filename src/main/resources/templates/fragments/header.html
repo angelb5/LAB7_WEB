@@ -46,8 +46,6 @@
                         th:text="${session.ncarrito}">
                         </span>
                     </li>
-</
-
                     <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span sec:authorize="hasAuthority('USER')" th:text="|(${session.usuario.nombres + session.usuario.apellidos})|"></span>
