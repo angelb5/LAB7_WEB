@@ -7,7 +7,7 @@
     <div id="content">
         <main>
             <!-- Contenido -->
-            <div class="page-header text-center">
+            <div class="page-header text-center my-3">
                 <h1>Lista de Juegos para la Venta</h1>
             </div>
             <div class="container-fluid">
@@ -22,7 +22,7 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th></th>
+                        <th class="col-2"></th>
                         <th style="width: 18%">Nombre</th>
                         <th style="width: 32%">Descripción</th>
                         <th style="width: 20%">Plataforma</th>
@@ -33,10 +33,25 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr">
-
-                        <td><a class="btn btn-primary" th:title="Editar" ><span class="bi bi-pencil-square"></span></a></td>
-                        <td><a class="btn btn-danger" th:title="Borrar" ><span class="bi bi-trash"></span></a></td>
+                    <tr th:each="juego, info : ${listaJuegos}">
+                        <td th:text="${info.index +1}"></td>
+                        <td>
+                            <img th:src="${juego.getImage()}" class="w-100" th:alt="${juego.getNombre()}">
+                        </td>
+                        <td>
+                            <span th:text="${juego.nombre}"></span>
+                            <span class="badge bg-warning text-black" th:text="${juego.genero.nombre}">...</span>
+                        </td>
+                        <td th:text="${juego.descripcion}"></td>
+                        <td th:text="${juego.plataforma.nombre}"></td>
+                        <td th:text="${juego.distribuidora.nombre}"></td>
+                        <td th:text="${juego.precio}"></td>
+                        <td>
+                            <a class="btn btn-primary" th:title="Editar" th:href="@{'/juegos/editar?id='+ ${juego.idjuego}}"><span class="bi bi-pencil-square"></span></a>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger" th:title="Borrar" th:href="@{'/juegos/borrar?id='+ ${juego.idjuego}}"><span class="bi bi-trash"></span></a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

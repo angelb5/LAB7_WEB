@@ -37,17 +37,32 @@ public class JuegosController {
     @Autowired
     UserRepository userRepository;
 
-//     @GetMapping(value = {"/juegos/lista"})
-//     public String listaJuegos (...){
-//
-//     }
+     @GetMapping(value = {"/juegos/lista"})
+     public String listaJuegos (Model model, HttpSession session){
+         User user = (User) session.getAttribute("usuario");
 
-    @GetMapping(value = {"", "/", "juegos/lista"})
+         if(user.getAutorizacion().equals("ADMIN")){
+             List<Juegos> listaJuegos = juegosRepository.findAllByOrderByPrecioAsc();
+             model.addAttribute("listaJuegos",listaJuegos);
+             return "juegos/lista";
+         }else{
+             List<JuegosUserDto> listaJuegosDTO = juegosRepository.obtenerJuegosPorUser(user.getIdusuario());
+             model.addAttribute("listaJuegos",listaJuegosDTO);
+             return "juegos/comprado";
+         }
+     }
+
+    @GetMapping(value = {"", "/", "juegos/vista"})
     public String vistaJuegos(Model model, HttpSession session){
-        List<Juegos> listaJuegos = juegosRepository.findAll(Sort.by("nombre").descending());
+        User user = (User) session.getAttribute("usuario");
+        List<Juegos> listaJuegos;
+        if(user!=null){
+            listaJuegos = juegosRepository.obtenerJuegosNoComprados(user.getIdusuario());
+        }else{
+            listaJuegos = juegosRepository.findAll(Sort.by("nombre").descending());
+        }
         model.addAttribute("listaJuegos",listaJuegos);
         return "juegos/vista";
-
     }
 
     @GetMapping("/juegos/nuevo")
