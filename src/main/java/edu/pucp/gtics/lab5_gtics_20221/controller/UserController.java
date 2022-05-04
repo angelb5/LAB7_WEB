@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -22,7 +23,34 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Controller
+@RequestMapping("")
 public class UserController {
+
+    @Autowired
+    UserRepository userRepository;
+
+    @GetMapping("/user/signIn")
+    public String pantallaLogueo(){
+        return "user/signIn";
+    }
+
+    @GetMapping("/user/signInRedirect")
+    public String signInRedirect(Authentication auth, RedirectAttributes attr, HttpSession session){
+        String rol = "";
+
+        for (GrantedAuthority role : auth.getAuthorities()){
+            rol = role.getAuthority();
+            break;
+        }
+        session.setAttribute("usuario",userRepository.findByCorreo(auth.getName()));
+
+        if(rol.equals("USER")){
+            session.setAttribute("carrito", new ArrayList<Juegos>());
+        }
+
+        return "redirect:/juegos/lista";
+    }
+
 
 }

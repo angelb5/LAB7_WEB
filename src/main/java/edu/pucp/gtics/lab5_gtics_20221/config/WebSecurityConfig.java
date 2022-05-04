@@ -10,7 +10,40 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.sql.DataSource;
 
+@Configuration
+@EnableWebSecurity
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-public class WebSecurityConfig  {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+
+        http.formLogin()
+                .loginPage("/user/signIn")
+                .loginProcessingUrl("/processLogin")
+                .defaultSuccessUrl("/user/signInRedirect");
+
+        http.logout()
+                .logoutSuccessUrl("/")
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true);
+
+        http.authorizeRequests()
+                .antMatchers("/plataformas/**","/distribuidoras/**").hasAuthority("ADMIN")
+                .antMatchers("carrito/**").hasAuthority("USER")
+                .anyRequest().permitAll();
+    }
+
+    @Autowired
+    DataSource dataSource;
+
+        @Override
+        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+            auth.jdbcAuthentication()
+                    .dataSource(dataSource)
+                    .passwordEncoder(new BCryptPasswordEncoder())
+                    .usersByUsernameQuery("SELECT correo, password, enabled FROM usuarios WHERE correo = ?")
+                    .authoritiesByUsernameQuery("SELECT correo, autorizacion FROM usuarios WHERE correo = ? and enabled = 1");
+        }
 
 }

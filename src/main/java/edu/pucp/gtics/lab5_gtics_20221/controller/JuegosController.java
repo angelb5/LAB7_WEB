@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +37,16 @@ public class JuegosController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping(value = {"/juegos/lista"})
-    public String listaJuegos (...){
+//     @GetMapping(value = {"/juegos/lista"})
+//     public String listaJuegos (...){
+//
+//     }
 
-    }
-
-    @GetMapping(value = {"", "/", "/vista"})
-    public String vistaJuegos ( ...){
+    @GetMapping(value = {"", "/", "juegos/vista"})
+    public String vistaJuegos(Model model, HttpSession session){
+        List<Juegos> listaJuegos = juegosRepository.findAll(Sort.by("nombre").descending());
+        model.addAttribute("listaJuegos",listaJuegos);
+        return "juegos/vista";
 
     }
 

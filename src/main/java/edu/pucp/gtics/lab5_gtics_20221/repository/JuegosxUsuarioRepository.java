@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 
-
-public  JuegosxUsuarioRepository {
+@Repository
+public interface JuegosxUsuarioRepository {
 
 }
