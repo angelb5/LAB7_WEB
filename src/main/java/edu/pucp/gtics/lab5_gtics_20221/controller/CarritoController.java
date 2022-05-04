@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 import java.util.*;
 
 @Controller
@@ -20,6 +21,9 @@ public class CarritoController {
 
     @Autowired
     JuegosRepository juegosRepository;
+
+    @Autowired
+    JuegosxUsuarioRepository juegosxUsuarioRepository;
 
     @GetMapping("/lista")
     public String listaCarrito (Model model, HttpSession session){
@@ -50,9 +54,20 @@ public class CarritoController {
     }
 
     @GetMapping("/comprar")
-    public String comprarCarrito(){
-
-
+    public String comprarCarrito(HttpSession session){
+        List<Juegos> juegosEnCarrito = (List<Juegos>) session.getAttribute("carrito");
+        JuegosxUsuario jxu= new JuegosxUsuario();
+        User user= (User) session.getAttribute("usuario");
+        int ncarrito = (int) session.getAttribute("ncarrito");
+        for (Juegos juego: juegosEnCarrito) {
+            jxu.setIdjuego(juego.getIdjuego());
+            jxu.setIdusuario(user.getIdusuario());
+            jxu.setCantidad(1);
+            juegosxUsuarioRepository.save(jxu);
+            System.out.println(juego.getNombre());
+        }
+        session.setAttribute("carrito",new ArrayList<Juegos>());
+        session.setAttribute("ncarrito",0);
         return "redirect:/juegos/lista";
     }
 

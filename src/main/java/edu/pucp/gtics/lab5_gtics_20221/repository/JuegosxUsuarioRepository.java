@@ -13,6 +13,6 @@ import java.util.List;
 
 
 @Repository
-public interface JuegosxUsuarioRepository {
+public interface JuegosxUsuarioRepository extends JpaRepository<JuegosxUsuario,Integer> {
 
 }
