@@ -3,8 +3,6 @@ package edu.pucp.gtics.lab5_gtics_20221.controller;
 import edu.pucp.gtics.lab5_gtics_20221.entity.*;
 import edu.pucp.gtics.lab5_gtics_20221.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,8 +33,8 @@ public class CarritoController {
     }
 
     @GetMapping("/nuevo")
-    public String nuevoCarrito(@RequestParam("id") int id, HttpSession session){
-
+    public String anadirCarrito(@RequestParam("id") int id, HttpSession session){
+        System.out.println(id);
         Optional<Juegos> juego = juegosRepository.findById(id);
 
         if (juego.isPresent()){
@@ -49,11 +47,13 @@ public class CarritoController {
             session.setAttribute("ncarrito",ncarrito+1);
         }
 
-        return "redirect:/vista";
+        return "redirect:/carrito/lista";
     }
 
     @GetMapping("/comprar")
     public String comprarCarrito(){
+
+
         return "redirect:/juegos/lista";
     }
 
