@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/carrito")
@@ -26,7 +24,12 @@ public class CarritoController {
 
     public String listaCarrito (Model model, HttpSession session){
 
-        
+        List<Juegos> juegosEnCarrito = (List<Juegos>) session.getAttribute("carrito");
+
+        // Ordena los elementos en carrito por precio
+        juegosEnCarrito.sort(Comparator.comparing(Juegos::getPrecio));
+        model.addAttribute("listaJuegos",juegosEnCarrito);
+
         return "carrito/lista";
     }
 
@@ -36,20 +39,34 @@ public class CarritoController {
 
         if (juego.isPresent()){
             List<Juegos> juegosEnCarrito = (List<Juegos>) session.getAttribute("carrito");
+            int ncarrito = (int) session.getAttribute("ncarrito");
+
             juegosEnCarrito.add(juego.get());
 
             session.setAttribute("carrito",juegosEnCarrito);
+            session.setAttribute("ncarrito",ncarrito+1);
         }
 
         return "redirect:/vista";
     }
 
-    public String editarCarrito( ... ){
-
+    public String editarCarrito(){
         return "redirect:/juegos/lista";
     }
 
-    public String borrarCarrito(...){
+    public String borrarCarrito(@RequestParam("id") int id, HttpSession session){
+
+        Optional<Juegos> juego = juegosRepository.findById(id);
+
+        if (juego.isPresent()){
+            List<Juegos> juegosEnCarrito = (List<Juegos>) session.getAttribute("carrito");
+            int ncarrito = (int) session.getAttribute("ncarrito");
+
+            juegosEnCarrito.remove(juego.get());
+
+            session.setAttribute("carrito",juegosEnCarrito);
+            session.setAttribute("ncarrito",ncarrito-1);
+        }
 
         return "redirect:/carrito/lista";
     }

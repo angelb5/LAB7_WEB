@@ -47,6 +47,7 @@ public class UserController {
 
         if(rol.equals("USER")){
             session.setAttribute("carrito", new ArrayList<Juegos>());
+            session.setAttribute("ncarrito",0);
         }
 
         return "redirect:/juegos/lista";
