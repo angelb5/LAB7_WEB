@@ -19,13 +19,13 @@
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" th:classappend="${option == 'Vista'}?'active' :''" th:href="@{/juegos/lista}">Juegos</a>
                 </li>
-                <li class="nav-item" sec:authorize="hasAnyAuthority('user')">
+                <li class="nav-item" sec:authorize="hasAnyAuthority('USER')">
                     <a class="nav-link" th:classappend="${option == 'Juegos'}?'active' :''" th:href="@{/carrito/lista}"><span>Mis </span>Juegos</a>
                 </li>
-                <li class="nav-item" sec:authorize="hasAnyAuthority('admin')">
+                <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
                     <a class="nav-link" th:classappend="${option == 'Plataformas'}?'active' :''" th:href="@{/plataformas/lista}" >Plataformas</a>
                 </li>
-                <li class="nav-item" sec:authorize="hasAnyAuthority('admin')">
+                <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
                     <a class="nav-link" th:classappend="${option == 'Distribuidoras'}?'active' :''" th:href="@{/distribuidoras/lista}" >Distribuidoras</a>
                 </li>
             </ul>
