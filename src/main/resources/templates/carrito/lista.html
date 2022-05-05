@@ -10,8 +10,7 @@
             <div class="page-header text-center">
                 <h1>Carrito de Juegos</h1>
             </div>
-            <div class="container-fluid">
-
+            <div class="container-fluid" th:if="${session.ncarrito>0}">
                 <a class="btn btn-success mt-4 mb-4" th:href="@{/carrito/comprar}"><span class="bi bi-credit-card"></span> Comprar</a>
                 <div th:if="${msg != null}" class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="bi bi-check-circle-fill"></i>
@@ -54,7 +53,12 @@
                     </tr>
                     </tbody>
                 </table>
+            </div>
 
+            <div class="container-fluid" th:unless="${session.ncarrito>0}">
+                <h4 class="my-5 text-center text-danger">
+                    El carrito está vacío
+                </h4>
             </div>
             <!-- /Contenido -->
         </main>

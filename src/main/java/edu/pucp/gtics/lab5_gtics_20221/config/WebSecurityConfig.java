@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/plataformas/**","/distribuidoras/**").hasAuthority("ADMIN")
-                .antMatchers("carrito/**").hasAuthority("USER")
+                .antMatchers("/carrito/**").hasAuthority("USER")
                 .anyRequest().permitAll();
     }
 
