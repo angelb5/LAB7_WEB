@@ -1,11 +1,10 @@
 package edu.pucp.gtics.lab5_gtics_20221.controller;
 
+import edu.pucp.gtics.lab5_gtics_20221.dao.DistribuidorasDao;
 import edu.pucp.gtics.lab5_gtics_20221.entity.Distribuidoras;
 import edu.pucp.gtics.lab5_gtics_20221.entity.Paises;
-import edu.pucp.gtics.lab5_gtics_20221.repository.DistribuidorasRepository;
 import edu.pucp.gtics.lab5_gtics_20221.repository.PaisesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,22 +21,20 @@ import java.util.Optional;
 public class DistribuidorasController {
 
     @Autowired
-    DistribuidorasRepository distribuidorasRepository;
+    DistribuidorasDao distribuidorasDao;
 
     @Autowired
     PaisesRepository paisesRepository;
 
     @GetMapping(value = {"/lista"})
     public String listaDistribuidoras (Model model){
-        List<Distribuidoras> listadistribuidoras = distribuidorasRepository.findAll(Sort.by("nombre"));
-        model.addAttribute("listadistribuidoras", listadistribuidoras);
-
+        model.addAttribute("listadistribuidoras", distribuidorasDao.listarDistribuidoras());
         return "distribuidoras/lista";
     }
 
     @GetMapping("/editar")
     public String editarDistribuidoras(@RequestParam("id") int id, Model model){
-        Optional<Distribuidoras> opt = distribuidorasRepository.findById(id);
+        Optional<Distribuidoras> opt = Optional.ofNullable(distribuidorasDao.obtenerDistribuidoraPorId(id));
         List<Paises> listaPaises = paisesRepository.findAll();
         if (opt.isPresent()){
             Distribuidoras distribuidora = opt.get();
@@ -47,7 +44,6 @@ public class DistribuidorasController {
         }else {
             return "redirect:/distribuidoras/lista";
         }
-
     }
 
     @GetMapping("/nuevo")
@@ -70,16 +66,16 @@ public class DistribuidorasController {
             } else {
                 attr.addFlashAttribute("msg", "Distribuidora actualizada exitosamente");
             }
-            distribuidorasRepository.save(distribuidora);
+            distribuidorasDao.guardarDistribuidoras(distribuidora);
             return "redirect:/distribuidoras/lista";
         }
     }
 
     @GetMapping("/borrar")
     public String borrarDistribuidora(@RequestParam("id") int id){
-        Optional<Distribuidoras> opt = distribuidorasRepository.findById(id);
+        Optional<Distribuidoras> opt = Optional.ofNullable(distribuidorasDao.obtenerDistribuidoraPorId(id));
         if (opt.isPresent()) {
-            distribuidorasRepository.deleteById(id);
+            distribuidorasDao.borrarDistribuidoras(id);
         }
         return "redirect:/distribuidoras/lista";
     }

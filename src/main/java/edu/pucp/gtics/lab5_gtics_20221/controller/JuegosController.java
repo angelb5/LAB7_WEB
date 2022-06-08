@@ -1,5 +1,6 @@
 package edu.pucp.gtics.lab5_gtics_20221.controller;
 
+import edu.pucp.gtics.lab5_gtics_20221.dao.DistribuidorasDao;
 import edu.pucp.gtics.lab5_gtics_20221.dao.JuegoDao;
 import edu.pucp.gtics.lab5_gtics_20221.entity.*;
 import edu.pucp.gtics.lab5_gtics_20221.repository.*;
@@ -26,7 +27,7 @@ public class JuegosController {
     PlataformasRepository plataformasRepository;
 
     @Autowired
-    DistribuidorasRepository distribuidorasRepository;
+    DistribuidorasDao distribuidorasDao;
 
     @Autowired
     GenerosRepository generosRepository;
@@ -65,7 +66,7 @@ public class JuegosController {
     @GetMapping("/juegos/nuevo")
     public String nuevoJuegos(Model model, @ModelAttribute("juego") Juego juego){
         List<Plataformas> listaPlataformas = plataformasRepository.findAll();
-        List<Distribuidoras> listaDistribuidoras = distribuidorasRepository.findAll();
+        List<Distribuidoras> listaDistribuidoras = distribuidorasDao.listarDistribuidoras();
         List<Generos> listaGeneros = generosRepository.findAll();
         model.addAttribute("listaPlataformas", listaPlataformas);
         model.addAttribute("listaDistribuidoras", listaDistribuidoras);
@@ -77,7 +78,7 @@ public class JuegosController {
     public String editarJuegos(@RequestParam("id") int id, Model model){
         Optional<Juego> opt = Optional.ofNullable(juegoDao.obtenerJuegoPorId(id));
         List<Plataformas> listaPlataformas = plataformasRepository.findAll();
-        List<Distribuidoras> listaDistribuidoras = distribuidorasRepository.findAll();
+        List<Distribuidoras> listaDistribuidoras = distribuidorasDao.listarDistribuidoras();
         List<Generos> listaGeneros = generosRepository.findAll();
         if (opt.isPresent()){
             Juego juego = opt.get();
@@ -95,7 +96,7 @@ public class JuegosController {
     public String guardarJuegos(Model model, RedirectAttributes attr, @ModelAttribute("juego") @Valid Juego juego, BindingResult bindingResult ){
         if(bindingResult.hasErrors( )){
             List<Plataformas> listaPlataformas = plataformasRepository.findAll();
-            List<Distribuidoras> listaDistribuidoras = distribuidorasRepository.findAll();
+            List<Distribuidoras> listaDistribuidoras = distribuidorasDao.listarDistribuidoras();
             List<Generos> listaGeneros = generosRepository.findAll();
             model.addAttribute("juego", juego);
             model.addAttribute("listaPlataformas", listaPlataformas);
