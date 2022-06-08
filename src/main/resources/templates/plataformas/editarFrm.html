@@ -8,7 +8,7 @@
         <main>
             <!-- Contenido -->
         <div class="page-header text-center">
-            <h2 th:text="${plataforma.idplataforma == 0? 'Nuevo Plataforma' : 'Editar Plataforma'}"></h2>
+            <h2 th:text="${plataforma.id == 0? 'Nuevo Plataforma' : 'Editar Plataforma'}"></h2>
         </div>
         <div class="container-fluid">
                 <form method="POST"  class="row g-3" th:object="${plataforma}" th:action="@{/plataformas/guardar}">
@@ -22,10 +22,10 @@
                         <textarea class="form-control" th:classappend="${#fields.hasErrors('descripcion')?'is-invalid':''}" id="descripcion" name="descripcion" th:field="*{descripcion}"></textarea>
                         <div class="text-danger" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}">Error</div>
                     </div >
-                    <input type="hidden" th:field="*{idplataforma}" th:if="${plataforma.idplataforma > 0}" />
+                    <input type="hidden" th:field="*{id}" th:if="${plataforma.id > 0}" />
                     <div class="form-group">
                         <a th:href="@{/plataformas/lista}" class="btn btn-danger">Cancelar</a>
-                        <button type="submit" class="btn btn-primary" th:text="${plataforma.idplataforma == 0? 'Registrar' : 'Actualizar'}">Reg/act</button>
+                        <button type="submit" class="btn btn-primary" th:text="${plataforma.id == 0? 'Registrar' : 'Actualizar'}">Reg/act</button>
                     </div>
                 </form>
         </div>

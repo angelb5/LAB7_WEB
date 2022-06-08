@@ -1,10 +1,6 @@
 package edu.pucp.gtics.lab5_gtics_20221.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -16,7 +12,8 @@ public class Plataformas implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Min(value = 0, message = "Plataforma no puede estar vacío")
-    private int idplataforma;
+    @Column(name = "idplataforma")
+    private int id;
 
     @Size(min=3, max = 45, message = "Debe contener entre 3 y 45 caracteres")
     private String nombre;
@@ -24,12 +21,12 @@ public class Plataformas implements Serializable{
     @Size(min=3, max = 198, message = "Debe contener entre 3 y 198 caracteres")
     private String descripcion;
 
-    public int getIdplataforma() {
-        return idplataforma;
+    public int getId() {
+        return id;
     }
 
-    public void setIdplataforma(int idplataforma) {
-        this.idplataforma = idplataforma;
+    public void setId(int idplataforma) {
+        this.id = idplataforma;
     }
 
     public String getNombre() {

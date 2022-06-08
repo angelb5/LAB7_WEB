@@ -1,45 +1,22 @@
 package edu.pucp.gtics.lab5_gtics_20221.entity;
 
-import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "distribuidoras")
 public class Distribuidoras implements Serializable{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Min(value = 0, message = "Distribuidora no puede estar vacío")
-    private int iddistribuidora;
-
-    @Size(min=3, max = 50, message = "Debe contener entre 3 y 50 caracteres")
+    private int id;
     private String nombre;
-
-    @Size(min=3, max = 198, message = "Debe contener entre 3 y 198 caracteres")
     private String descripcion;
-
-    @Size(min=3, max = 198, message = "Debe contener entre 3 y 198 caracteres")
-    @Pattern(regexp = "^(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", message = "Debe ser una URL http o https")
     private String web;
-
-    @Min(value = 1800, message = "Debe ser mayor que o igual a 1800")
-    @Max(value = 2100, message = "Debe ser menor que 2100")
-    @NotNull(message = "Coloque un número")
     private int fundacion = 1800;
+    private Paises sede;
 
-    @ManyToOne
-    @JoinColumn(name = "idsede")
-    @Valid
-    private Paises pais;
-
-    public int getIddistribuidora() {
-        return iddistribuidora;
+    public int getId() {
+        return id;
     }
 
-    public void setIddistribuidora(int iddistribuidora) {
-        this.iddistribuidora = iddistribuidora;
+    public void setId(int iddistribuidora) {
+        this.id = iddistribuidora;
     }
 
     public String getNombre() {
@@ -73,11 +50,11 @@ public class Distribuidoras implements Serializable{
         this.fundacion = fundacion;
     }
 
-    public Paises getPais() {
-        return pais;
+    public Paises getSede() {
+        return sede;
     }
 
-    public void setPais(Paises pais) {
-        this.pais = pais;
+    public void setSede(Paises sede) {
+        this.sede = sede;
     }
 }

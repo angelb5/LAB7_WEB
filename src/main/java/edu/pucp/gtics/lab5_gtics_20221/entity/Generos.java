@@ -13,17 +13,17 @@ public class Generos implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Min(value = 0, message = "Género no puede estar vacío")
-    private
-    int idgenero;
+    @Column(name = "idgenero", nullable = false)
+    private int id;
     private String nombre;
     private String descripcion;
 
-    public int getIdgenero() {
-        return idgenero;
+    public int getId() {
+        return id;
     }
 
-    public void setIdgenero(int idgenero) {
-        this.idgenero = idgenero;
+    public void setId(int idgenero) {
+        this.id = idgenero;
     }
 
     public String getNombre() {

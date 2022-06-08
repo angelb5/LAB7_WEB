@@ -1,10 +1,6 @@
 package edu.pucp.gtics.lab5_gtics_20221.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
 
@@ -15,17 +11,18 @@ public class Paises implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Min(value = 0, message = "Sede no puede estar vacío")
-    private int idpais;
+    @Column(name = "idpais", nullable = false)
+    private int id;
     private String iso;
     private String nombre;
 
 
-    public int getIdpais() {
-        return idpais;
+    public int getId() {
+        return id;
     }
 
-    public void setIdpais(int idpais) {
-        this.idpais = idpais;
+    public void setId(int idpais) {
+        this.id = idpais;
     }
 
     public String getIso() {

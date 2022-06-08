@@ -64,9 +64,9 @@ public class JuegoDao {
         String url = "http://localhost:8080/juegos/" + id;
         ResponseEntity<JuegoDto> responseMap = restTemplate.getForEntity(url, JuegoDto.class);
 
-        JuegoDto productDto = responseMap.getBody();
+        JuegoDto juegoDto = responseMap.getBody();
 
-        return productDto.getJuego();
+        return juegoDto.getJuego();
     }
 
 

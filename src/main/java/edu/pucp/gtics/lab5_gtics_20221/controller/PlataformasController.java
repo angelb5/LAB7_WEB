@@ -56,7 +56,7 @@ public class PlataformasController {
             model.addAttribute("plataforma", plataforma);
             return "plataformas/editarFrm";
         } else {
-            if (plataforma.getIdplataforma() == 0) {
+            if (plataforma.getId() == 0) {
                 attr.addFlashAttribute("msg", "Plataforma creada exitosamente");
             } else {
                 attr.addFlashAttribute("msg", "Plataforma actualizada exitosamente");
