@@ -2,6 +2,7 @@ package edu.pucp.gtics.lab5_gtics_20221.controller;
 
 import edu.pucp.gtics.lab5_gtics_20221.entity.Distribuidoras;
 import edu.pucp.gtics.lab5_gtics_20221.entity.Paises;
+import edu.pucp.gtics.lab5_gtics_20221.repository.DistribuidorasRepository;
 import edu.pucp.gtics.lab5_gtics_20221.repository.PaisesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;

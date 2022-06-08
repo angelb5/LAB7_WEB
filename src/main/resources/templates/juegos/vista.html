@@ -17,10 +17,10 @@
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 card-app">
                         <div class="col mb-4" th:each=" juego : ${listaJuegos}">
                             <div class="card" >
-                                <input hidden th:value="${juego.idjuego}" name="id">
+                                <input hidden th:value="${juego.id}" name="id">
                                 <img th:src="${juego.image}" th:alt="${juego.nombre}" class="card-img-top" alt="Card image cap">
                                 <span class="position-absolute top-100 end-0 translate-middle badge bg-danger fs-6" th:text="'$' + ${juego.precio}" ></span>
-                                <a class="btn btn-primary" sec:authorize="hasAnyAuthority('USER')" th:title="Comprar" th:href="@{'/carrito/nuevo?id='+ ${juego.idjuego}}"><span class="bi bi-plus-circle"></span> Comprar</a>
+                                <a class="btn btn-primary" sec:authorize="hasAnyAuthority('USER')" th:title="Comprar" th:href="@{'/carrito/nuevo?id='+ ${juego.id}}"><span class="bi bi-plus-circle"></span> Comprar</a>
                                 <div class="card-body">
                                     <div class="card-title">
                                         <span class="h-5" th:text="${juego.nombre}" >

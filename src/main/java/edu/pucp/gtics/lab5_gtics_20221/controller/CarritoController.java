@@ -1,5 +1,6 @@
 package edu.pucp.gtics.lab5_gtics_20221.controller;
 
+import edu.pucp.gtics.lab5_gtics_20221.dao.JuegoDao;
 import edu.pucp.gtics.lab5_gtics_20221.entity.*;
 import edu.pucp.gtics.lab5_gtics_20221.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,8 @@ import java.util.*;
 @RequestMapping("/carrito")
 public class CarritoController {
 
-
     @Autowired
-    JuegosRepository juegosRepository;
+    JuegoDao juegoDao;
 
     @Autowired
     JuegosxUsuarioRepository juegosxUsuarioRepository;
@@ -38,7 +38,7 @@ public class CarritoController {
     @GetMapping("/nuevo")
     public String anadirCarrito(@RequestParam("id") int id, HttpSession session){
 
-        Optional<Juego> juego = juegosRepository.findById(id);
+        Optional<Juego> juego = Optional.ofNullable(juegoDao.obtenerJuegoPorId(id));
 
         if (juego.isPresent()){
             List<Juego> juegosEnCarrito = (List<Juego>) session.getAttribute("carrito");
@@ -61,7 +61,7 @@ public class CarritoController {
         for (Juego juego: juegoEnCarrito) {
             boolean contado = false;
             for(JuegosxUsuario jComprar : juegosComprar ){
-                if(jComprar.getIdjuego()==juego.getIdjuego()){
+                if(jComprar.getIdjuego()==juego.getId()){
                     contado = true;
                     jComprar.setCantidad(jComprar.getCantidad()+1);
                 }
@@ -69,7 +69,7 @@ public class CarritoController {
 
             if(!contado){
                 JuegosxUsuario jxu= new JuegosxUsuario();
-                jxu.setIdjuego(juego.getIdjuego());
+                jxu.setIdjuego(juego.getId());
                 jxu.setIdusuario(user.getIdusuario());
                 jxu.setCantidad(1);
                 juegosComprar.add(jxu);
@@ -85,7 +85,7 @@ public class CarritoController {
     @GetMapping("/borrar")
     public String borrarCarrito(@RequestParam("id") int id, HttpSession session){
 
-        Optional<Juego> juego = juegosRepository.findById(id);
+        Optional<Juego> juego = Optional.ofNullable(juegoDao.obtenerJuegoPorId(id));
 
         if (juego.isPresent()){
             List<Juego> juegoEnCarrito = (List<Juego>) session.getAttribute("carrito");
@@ -96,7 +96,7 @@ public class CarritoController {
 
             while (itr.hasNext()){
                 j = (Juego) itr.next();
-                if(j.getIdjuego()==id){
+                if(j.getId()==id){
                     itr.remove();
                     break;
                 }
