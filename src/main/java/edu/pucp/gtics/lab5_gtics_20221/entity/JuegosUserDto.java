@@ -1,12 +1,15 @@
 package edu.pucp.gtics.lab5_gtics_20221.entity;
 
-public interface JuegosUserDto {
+import lombok.Getter;
+import lombok.Setter;
 
-    Integer getIdjuego();
-    String getImageURL();
-    String getNombre();
-    String getGenero();
-    String getDescripcion();
+@Getter
+@Setter
+public class JuegosUserDto {
 
-
+    private Integer idjuego;
+    private String imageURL;
+    private String nombre;
+    private String genero;
+    private String descripcion;
 }

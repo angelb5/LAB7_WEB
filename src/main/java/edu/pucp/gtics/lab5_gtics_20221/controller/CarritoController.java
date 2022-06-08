@@ -6,12 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 import java.util.*;
 
 @Controller
@@ -28,10 +26,10 @@ public class CarritoController {
     @GetMapping("/lista")
     public String listaCarrito (Model model, HttpSession session){
 
-        List<Juegos> juegosEnCarrito = (List<Juegos>) session.getAttribute("carrito");
+        List<Juego> juegosEnCarrito = (List<Juego>) session.getAttribute("carrito");
 
         // Ordena los elementos en carrito por precio
-        juegosEnCarrito.sort(Comparator.comparing(Juegos::getPrecio));
+        juegosEnCarrito.sort(Comparator.comparing(Juego::getPrecio));
         model.addAttribute("listaJuegos",juegosEnCarrito);
 
         return "carrito/lista";
@@ -40,10 +38,10 @@ public class CarritoController {
     @GetMapping("/nuevo")
     public String anadirCarrito(@RequestParam("id") int id, HttpSession session){
 
-        Optional<Juegos> juego = juegosRepository.findById(id);
+        Optional<Juego> juego = juegosRepository.findById(id);
 
         if (juego.isPresent()){
-            List<Juegos> juegosEnCarrito = (List<Juegos>) session.getAttribute("carrito");
+            List<Juego> juegosEnCarrito = (List<Juego>) session.getAttribute("carrito");
             int ncarrito = (int) session.getAttribute("ncarrito");
             juegosEnCarrito.add(juego.get());
             session.setAttribute("carrito",juegosEnCarrito);
@@ -55,12 +53,12 @@ public class CarritoController {
 
     @GetMapping("/comprar")
     public String comprarCarrito(HttpSession session){
-        List<Juegos> juegosEnCarrito = (List<Juegos>) session.getAttribute("carrito");
+        List<Juego> juegoEnCarrito = (List<Juego>) session.getAttribute("carrito");
         List<JuegosxUsuario> juegosComprar = new ArrayList<JuegosxUsuario>();
         User user= (User) session.getAttribute("usuario");
         int ncarrito = (int) session.getAttribute("ncarrito");
 
-        for (Juegos juego: juegosEnCarrito) {
+        for (Juego juego: juegoEnCarrito) {
             boolean contado = false;
             for(JuegosxUsuario jComprar : juegosComprar ){
                 if(jComprar.getIdjuego()==juego.getIdjuego()){
@@ -79,7 +77,7 @@ public class CarritoController {
         }
 
         juegosxUsuarioRepository.saveAll(juegosComprar);
-        session.setAttribute("carrito",new ArrayList<Juegos>());
+        session.setAttribute("carrito",new ArrayList<Juego>());
         session.setAttribute("ncarrito",0);
         return "redirect:/juegos/lista";
     }
@@ -87,24 +85,24 @@ public class CarritoController {
     @GetMapping("/borrar")
     public String borrarCarrito(@RequestParam("id") int id, HttpSession session){
 
-        Optional<Juegos> juego = juegosRepository.findById(id);
+        Optional<Juego> juego = juegosRepository.findById(id);
 
         if (juego.isPresent()){
-            List<Juegos> juegosEnCarrito = (List<Juegos>) session.getAttribute("carrito");
+            List<Juego> juegoEnCarrito = (List<Juego>) session.getAttribute("carrito");
             int ncarrito = (int) session.getAttribute("ncarrito");
 
-            Iterator itr = juegosEnCarrito.iterator();
-            Juegos j;
+            Iterator itr = juegoEnCarrito.iterator();
+            Juego j;
 
             while (itr.hasNext()){
-                j = (Juegos) itr.next();
+                j = (Juego) itr.next();
                 if(j.getIdjuego()==id){
                     itr.remove();
                     break;
                 }
             }
 
-            session.setAttribute("carrito",juegosEnCarrito);
+            session.setAttribute("carrito", juegoEnCarrito);
             session.setAttribute("ncarrito",ncarrito-1);
         }
 
